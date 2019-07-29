@@ -1,0 +1,9 @@
+numpy
+librosa
+matplotlib
+scikit-image
+hashlib
+mysql-python
+tqdm
+sounddevice
+scipy
