@@ -4,7 +4,9 @@ import os
 from tqdm import tqdm
 import sounddevice as sd
 from scipy.io.wavfile import write
-SONGS_PATH = '/home/van/Desktop/VCCorp/fingerprint/songs/'
+
+SONGS_PATH = './songs/'
+
 def buildDB():
     print('Building database.')
     DBExcutor.create()
@@ -19,17 +21,24 @@ def buildDB():
 if __name__ == '__main__':
         from time import time
         t = time()
+        name = "Không tìm được bài hát."
+        while  (name == "Không tìm được bài hát." and time()-t < 100):
+                try:
+                        fs = 22050  # Sample rate
+                        seconds = 10  # Duration of recording
+                        print('Recording...')
+                        myrecording = sd.rec(int(seconds * fs), samplerate=fs, channels=2)
+                        sd.wait()  # Wait until recording is finished
 
-        # fs = 44100  # Sample rate
-        # seconds = 10  # Duration of recording
-        # print('Recording...')
-        # myrecording = sd.rec(int(seconds * fs), samplerate=fs, channels=2)
-        # sd.wait()  # Wait until recording is finished
+                        tempFile = './temp/output.wav'
+                        write(tempFile, fs, myrecording)
 
-        tempFile = '/home/van/Desktop/VCCorp/fingerprint/temp/cut-Ước Gì-.mp3'
-        # write(tempFile, fs, myrecording)
+                        song = Song(tempFile)
+                        fprints = song.genFprints()
+                        name = DBExcutor.findSongByFprints(fprints)
+                except:
+                        print('Có lỗi.')
 
-        song = Song(tempFile)
-        fprints = song.genFprints()
-        print(DBExcutor.findSongByFprints(fprints))
+        print(name)
+        
         print(time() - t)
