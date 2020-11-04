@@ -7,7 +7,7 @@ class DBExcutor:
     __config = {
         'database': 'audio_fingerprint',
         'user': 'root',
-        'password': '14121998',
+        'password': '*********',
         'host': 'localhost',
         'port': '3306'
     }
